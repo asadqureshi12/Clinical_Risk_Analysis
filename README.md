@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project develops a **data-driven risk stratification model** to identify high-risk patients within a clinical cohort. By integrating multiple clinical variables — including encounter frequency, disease burden, and polypharmacy — the analysis provides a framework for proactive intervention and optimised resource allocation.
+This project develops a **data-driven risk stratification model** to identify high-risk patients within a clinical cohort. By integrating multiple clinical variables — including encounter frequency, disease burden, and polypharmacy — the analysis provides a framework for proactive intervention and optimized resource allocation.
 
 The analysis is built on a synthetic EHR (Electronic Health Record) dataset and demonstrates a complete data science pipeline from raw data ingestion through to scored, exportable output.
 
@@ -16,6 +16,7 @@ The analysis is built on a synthetic EHR (Electronic Health Record) dataset and 
 |---|---|
 | `Clinical_Risk_Analysis.ipynb` | Jupyter notebook with full analysis workflow |
 | `Clinical_Risk_Analysis.csv` | Processed dataset including risk scores and risk levels |
+| PNG visualizations | Saved in root folder |
 
 ---
 
@@ -63,11 +64,9 @@ Patients are then categorised into risk tiers based on their total score:
 | Low | 427 | 36.5% |
 | Medium | 311 | 26.5% |
 
-The cohort shows a meaningful spread across all three risk tiers, indicating a population with varied clinical complexity. The stratification thresholds were calibrated to produce a realistic distribution suitable for targeted intervention planning.
-
 ### Age & Utilisation Trends
 
-Average encounters and medication counts increase sharply with age, confirming that older patients represent the highest clinical burden in this cohort:
+Average encounters and medication counts increase sharply with age:
 
 | Age Group | Avg Encounters | Avg Medications |
 |---|---|---|
@@ -79,7 +78,7 @@ Average encounters and medication counts increase sharply with age, confirming t
 
 ### Clinical Intensity by Disease Burden
 
-Patients with more diagnosed conditions also show substantially higher encounter rates, reinforcing that condition count is a meaningful proxy for healthcare utilisation:
+Patients with more diagnosed conditions show higher encounter rates:
 
 | Conditions | Avg Encounters |
 |---|---|
@@ -91,17 +90,30 @@ Patients with more diagnosed conditions also show substantially higher encounter
 
 ### Gender Distribution
 
-The cohort is nearly evenly split: 52.0% female, 48.0% male, indicating no significant gender imbalance in the dataset.
+The cohort is nearly evenly split: 52.0% female, 48.0% male.
+
+---
+
+## Visualizations
+
+### Encounters vs Age by Risk Level
+![Encounters vs Age](encounters_vs_age_by_risk.png)
+
+### Average Medications per Age Group
+![Average Medications](avg_medications_age_group.png)
+
+### Average Encounters by Number of Conditions
+![Encounters by Conditions](avg_encounters_conditions.png)
+
+### Risk Level Distribution
+![Risk Level Distribution](risk_level_distribution.png)
+
 
 ---
 
 ## Data Quality Note — Medication Count Outliers
 
-Summary statistics show a large gap between the mean and median medication counts. The dataset has a mean of approximately 36 medications per patient, while the median is 7, with a maximum value exceeding 3,000.
-
-This indicates the presence of extreme outliers, likely caused by cumulative medication records, historical prescriptions, or duplicated entries in the synthetic EHR dataset.
-
-For this exploratory analysis, the values are retained to preserve the original dataset structure. In a production healthcare analytics workflow, additional preprocessing steps such as outlier detection, medication reconciliation, or capping extreme values would typically be applied before risk modeling.
+The dataset shows a large gap between mean and median medication counts. Mean ≈ 36, median = 7, max > 3,000. Outliers were retained to preserve dataset structure. In production workflows, preprocessing like outlier detection or capping would normally be applied.
 
 ---
 
