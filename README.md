@@ -1,46 +1,110 @@
 # Clinical Risk Stratification & Population Health Analytics
 
 ## Project Overview
-The objective of this project was to develop a **data-driven risk stratification model** to identify high-risk patients within a clinical cohort. By integrating multiple clinical variables — including encounter frequency, disease burden, and polypharmacy — the analysis provides a framework for proactive intervention and optimized resource allocation.
 
-## Risk Stratification Methodology
-The project utilized a structured **Python-based data science pipeline** to develop a multi-factorial risk scoring algorithm:
+This project develops a **data-driven risk stratification model** to identify high-risk patients within a clinical cohort. By integrating multiple clinical variables — including encounter frequency, disease burden, and polypharmacy — the analysis provides a framework for proactive intervention and optimised resource allocation.
 
-- **Feature Engineering:** Aggregated EHR datasets to create quantitative indicators of patient complexity:
-  - `encounter_count`
-  - `condition_count`
-  - `medication_count`
-- **Risk Scoring Logic:** Assigned points based on:
-  - Age > 65 → +2 points  
-  - Number of conditions ≥ 3 → +2 points  
-  - Encounters ≥ 5 → +1 point  
-  - Medications ≥ 4 → +1 point  
-  - Patients categorized into **Low (0–1), Medium (2–3), High (4+)** risk tiers.
-- **Age Transformation:** Converted birthdates into age metrics to include age as a core risk factor.
+The analysis is built on a synthetic EHR (Electronic Health Record) dataset and demonstrates a complete data science pipeline from raw data ingestion through to scored, exportable output.
 
-## Key Findings
-- **High-Risk Prevalence:**  
-  - 72.6% (851 patients) classified as **High Risk**  
-  - 19.0% (223 patients) as **Medium Risk**  
-  - 8.3% (97 patients) as **Low Risk**  
-  Indicates a population with significant multimorbidity.
+**Tools used:** Python, Pandas, Matplotlib
 
-- **Polypharmacy Burden:**  
-  - Cohort-wide average: 36.7 medications per patient  
-  - Median: 7 medications  
-  - Wide gaps suggest outliers due to historical prescriptions, duplicates, or short-term medications.  
-  - In production, outlier handling would be necessary for accurate risk scoring.
-
-- **Clinical Intensity:**  
-  - Average: 45.6 encounters and 7.2 diagnosed conditions per patient  
-  - Median: 27 encounters and 7 conditions  
-  - Shows high overall healthcare utilization.
-
-- **Age & Utilization Trends:**  
-  - Patients aged 81–100 average **67.6 encounters** and **80.1 medications**  
-  - Patients aged 0–20 average **19.2 encounters** and **5.5 medications**  
-  - Demonstrates sharp increases in healthcare utilization with age.
+---
 
 ## Project Files
-- `Clinical_Risk_Analysis.ipynb` — Jupyter notebook with full analysis workflow  
-- `Clinical_Risk_Analysis_Output.csv` — Processed dataset including risk scores and risk levels
+
+| File | Description |
+|---|---|
+| `Clinical_Risk_Analysis.ipynb` | Jupyter notebook with full analysis workflow |
+| `Clinical_Risk_Analysis.csv` | Processed dataset including risk scores and risk levels |
+
+---
+
+## Risk Stratification Methodology
+
+The project uses a structured Python-based pipeline to build a multi-factorial risk scoring algorithm.
+
+### Feature Engineering
+
+Patient-level counts are aggregated from raw EHR datasets to create quantitative indicators of clinical complexity:
+
+- `encounter_count` — total hospital encounters per patient
+- `condition_count` — total diagnosed conditions per patient
+- `medication_count` — total prescribed medications per patient
+- `age` — derived from `BIRTHDATE`, calculated as of 2024
+
+### Risk Scoring Logic
+
+Each patient receives a risk score based on the following clinical thresholds:
+
+| Factor | Threshold | Points |
+|---|---|---|
+| Age | > 75 | +1 |
+| Conditions | ≥ 5 | +1 |
+| Encounters | ≥ 20 | +1 |
+| Medications | ≥ 15 | +1 |
+
+Patients are then categorised into risk tiers based on their total score:
+
+| Score | Risk Level |
+|---|---|
+| 0 – 1 | Low |
+| 2 | Medium |
+| 3 – 4 | High |
+
+---
+
+## Key Findings
+
+### Risk Distribution
+
+| Risk Level | Patients | Percentage |
+|---|---|---|
+| High | 433 | 37.0% |
+| Low | 427 | 36.5% |
+| Medium | 311 | 26.5% |
+
+The cohort shows a meaningful spread across all three risk tiers, indicating a population with varied clinical complexity. The stratification thresholds were calibrated to produce a realistic distribution suitable for targeted intervention planning.
+
+### Age & Utilisation Trends
+
+Average encounters and medication counts increase sharply with age, confirming that older patients represent the highest clinical burden in this cohort:
+
+| Age Group | Avg Encounters | Avg Medications |
+|---|---|---|
+| 0 – 20 | 19.2 | 5.5 |
+| 21 – 40 | 34.5 | 11.7 |
+| 41 – 60 | 38.0 | 26.9 |
+| 61 – 80 | 48.8 | 42.1 |
+| 81 – 100 | 67.6 | 80.1 |
+
+### Clinical Intensity by Disease Burden
+
+Patients with more diagnosed conditions also show substantially higher encounter rates, reinforcing that condition count is a meaningful proxy for healthcare utilisation:
+
+| Conditions | Avg Encounters |
+|---|---|
+| 0 – 1 | 11.8 |
+| 1 – 2 | 13.7 |
+| 2 – 3 | 18.9 |
+| 3 – 4 | 24.8 |
+| 4 – 10 | 38.5 |
+
+### Gender Distribution
+
+The cohort is nearly evenly split: 52.0% female, 48.0% male, indicating no significant gender imbalance in the dataset.
+
+---
+
+## Data Quality Note — Medication Count Outliers
+
+Summary statistics show a large gap between the mean and median medication counts. The dataset has a mean of approximately 36 medications per patient, while the median is 7, with a maximum value exceeding 3,000.
+
+This indicates the presence of extreme outliers, likely caused by cumulative medication records, historical prescriptions, or duplicated entries in the synthetic EHR dataset.
+
+For this exploratory analysis, the values are retained to preserve the original dataset structure. In a production healthcare analytics workflow, additional preprocessing steps such as outlier detection, medication reconciliation, or capping extreme values would typically be applied before risk modeling.
+
+---
+
+## About
+
+Portfolio project demonstrating clinical risk stratification and population health analytics using Python and Pandas.
