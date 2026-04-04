@@ -1,3 +1,6 @@
+> ⚠️ This repository has been archived.  
+> A full rebuild is available at [Clinical Risk Analysis v2](https://github.com/asadqureshi12/clinical-risk-analysis-v2).
+
 # Clinical Risk Stratification & Population Health Analytics
 
 ## Project Overview
